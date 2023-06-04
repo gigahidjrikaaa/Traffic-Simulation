@@ -1,9 +1,12 @@
+import random
+
 class TrafficSignal:
     def __init__(self, roads, config={}):
         # Initialize roads
         self.roads = roads
         # Set default configuration
         self.set_default_config()
+
         # Update configuration
         for attr, val in config.items():
             setattr(self, attr, val)
@@ -33,3 +36,5 @@ class TrafficSignal:
         cycle_length = 15
         k = (sim.t // cycle_length) % 4
         self.current_cycle_index = int(k)
+        if(len(self.roads) < 4):
+            self.current_cycle_index = 3

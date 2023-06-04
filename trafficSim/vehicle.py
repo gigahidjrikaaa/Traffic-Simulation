@@ -17,7 +17,7 @@ class Vehicle:
         self.s0 = 4
         self.T = 1
         self.v_max = 50
-        self.a_max = 5
+        self.a_max = 20
         self.b_max = 50
 
         self.path = []

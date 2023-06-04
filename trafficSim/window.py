@@ -305,12 +305,14 @@ class Window:
     def draw_status(self):
         text_fps = self.text_font.render(f't={self.sim.t:.5}', False, (0, 0, 0))
         text_frc = self.text_font.render(f'n={self.sim.frame_count}', False, (0, 0, 0))
-        vehicles_passed = int(self.sim.vehiclesPassed/2)
+        vehicles_passed = int(self.sim.vehiclesPassed)
         text_vehicles_passed = self.text_font.render(f'Vehicles Passed={vehicles_passed}', False, (0, 0, 0))
+        text_vehicles_present = self.text_font.render(f'Vehicles Present={self.sim.vehiclesPresent}', False, (0, 0, 0))
 
         self.screen.blit(text_fps, (0, 0))
         self.screen.blit(text_frc, (100, 0))
         self.screen.blit(text_vehicles_passed, (200, 0))
+        self.screen.blit(text_vehicles_present, (400, 0))
 
 
     def draw(self):

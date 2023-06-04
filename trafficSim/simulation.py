@@ -5,6 +5,7 @@ from .traffic_signal import TrafficSignal
 
 class Simulation:
     vehiclesPassed = 0;
+    vehiclesPresent = 0;
 
     def __init__(self, config={}):
         # Set default configuration
@@ -72,13 +73,20 @@ class Simulation:
                     # Add it to the next road
                     next_road_index = vehicle.path[vehicle.current_road_index]
                     self.roads[next_road_index].vehicles.append(new_vehicle)
+                else:
+                    Simulation.vehiclesPassed += 1
                 # In all cases, remove it from its road
                 road.vehicles.popleft() 
 
                 # if vehicle reached the end of the path
-                if vehicle.current_road_index + 1 == len(vehicle.path):
-                    Simulation.vehiclesPassed += 1
+                # if vehicle.current_road_index + 1 == len(vehicle.path):
+                #     Simulation.vehiclesPassed += 1
                     # print("Vehicle passed: " + str(Simulation.vehiclesPassed))
+
+        # Check for the number of vehicles present
+        Simulation.vehiclesPresent = 0
+        for road in self.roads:
+            Simulation.vehiclesPresent += len(road.vehicles)
 
         # Increment time
         self.t += self.dt
