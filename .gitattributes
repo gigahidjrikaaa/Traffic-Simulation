@@ -3,3 +3,6 @@
 
 # ignore __pycache__ directory
 __pycache__/
+
+# ignore __pycache__ directory in all subdirectories
+**/__pycache__
