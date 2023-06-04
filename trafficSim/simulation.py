@@ -7,6 +7,7 @@ class Simulation:
     vehiclesPassed = 0;
     vehiclesPresent = 0;
     vehicleRate = 0;
+    isPaused = False;
 
     def __init__(self, config={}):
         # Set default configuration
@@ -98,3 +99,12 @@ class Simulation:
     def run(self, steps):
         for _ in range(steps):
             self.update()
+
+    def pause(self):
+        self.isPaused = True
+
+    def resume(self):
+        self.isPaused = False
+
+    def getState(self):
+        return self.isPaused

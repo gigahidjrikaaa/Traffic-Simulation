@@ -13,12 +13,12 @@ class Vehicle:
         self.init_properties()
 
     def set_default_config(self):    
-        self.l = 4
-        self.s0 = 4
+        self.l = 3
+        self.s0 = 3
         self.T = 1
-        self.v_max = 50
-        self.a_max = 75
-        self.b_max = 60
+        self.v_max = 40
+        self.a_max = 50
+        self.b_max = 30
 
         self.path = []
         self.current_road_index = 0

@@ -299,8 +299,6 @@ class Window:
                         cos=road.angle_cos, sin=road.angle_sin,
                         color=color)
                     
-    
-
 
     def draw_status(self):
         text_fps = self.text_font.render(f't={self.sim.t:.5}', False, (0, 0, 0))
@@ -321,6 +319,14 @@ class Window:
         self.screen.blit(text_average_vehicles_per_minute, (630, 0))
         self.screen.blit(text_total_vehicles, (0, 20))
         self.screen.blit(text_vehicle_rate, (200, 20))
+
+        if self.sim.isPaused:
+            text_pause = self.text_font.render(f'Play', False, (0, 0, 0))
+        else:
+            text_pause = self.text_font.render(f'Pause', False, (0, 0, 0))
+        self.screen.blit(text_pause, (1000, 0))
+        
+
 
 
     def draw(self):

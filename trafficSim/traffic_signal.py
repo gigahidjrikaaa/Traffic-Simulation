@@ -33,7 +33,7 @@ class TrafficSignal:
         return self.cycle[self.current_cycle_index]
     
     def update(self, sim):
-        cycle_length = 15
+        cycle_length = 45
         k = (sim.t // cycle_length) % 4
         self.current_cycle_index = int(k)
         if(len(self.roads) < 4):

@@ -10,7 +10,8 @@ b = 12
 l = 300
 
 NUM_OF_ROADS = 36
-VEHICLE_RATE = 200
+VEHICLE_RATE = 100
+STEPS_PER_UPDATE = 2
 
 # Nodes
 WEST_RIGHT_START = (-b-l, a)
@@ -265,48 +266,48 @@ sim.create_gen({
 'vehicle_rate': VEHICLE_RATE,
 'vehicles':[
     # 1st Lane
-    [3, {'path': [0, 8, 6]}],
+    [2, {'path': [0, 8, 6]}],
     [2, {'path': [0, *road(NUM_OF_ROADS), 5]}],
     # [2, {'path': [0, *road(24+n), 7]}],
 
-    [3, {'path': [1, 9, 7]}],
+    [2, {'path': [1, 9, 7]}],
     [2, {'path': [1, *road(NUM_OF_ROADS+2*n), 6]}],
     # [1, {'path': [1, *road(24+3*n), 4]}],
 
     [3, {'path': [2, 10, 4]}],
-    [2, {'path': [2, *road(NUM_OF_ROADS+4*n), 7]}],
+    [3, {'path': [2, *road(NUM_OF_ROADS+4*n), 7]}],
     # [1, {'path': [2, *road(24+5*n), 5]}],
 
-    [3, {'path': [3, 11, 5]}],
-    [2, {'path': [3, *road(NUM_OF_ROADS+6*n), 4]}],
+    [4, {'path': [3, 11, 5]}],
+    [4, {'path': [3, *road(NUM_OF_ROADS+6*n), 4]}],
     # [2, {'path': [3, *road(24+7*n), 6]}],
 
     # 2nd Lane
     [2, {'path': [12, 20, 18]}],
     # [2, {'path': [12, *road(24+8*n), 17]}],
-    [3, {'path': [12, *road(NUM_OF_ROADS+9*n), 19]}],
+    [2, {'path': [12, *road(NUM_OF_ROADS+9*n), 19]}],
 
     [2, {'path': [13, 21, 19]}],
     # [2, {'path': [13, *road(24+10*n), 18]}],
-    [3, {'path': [13, *road(NUM_OF_ROADS+11*n), 16]}],
+    [2, {'path': [13, *road(NUM_OF_ROADS+11*n), 16]}],
 
-    [2, {'path': [14, 22, 16]}],
+    [3, {'path': [14, 22, 16]}],
     # [2, {'path': [14, *road(24+12*n), 19]}],
     [3, {'path': [14, *road(NUM_OF_ROADS+13*n), 17]}],
 
-    [2, {'path': [15, 23, 17]}],
+    [4, {'path': [15, 23, 17]}],
     # [2, {'path': [15, *road(24+14*n), 16]}],
-    [3, {'path': [15, *road(NUM_OF_ROADS+15*n), 18]}],
+    [4, {'path': [15, *road(NUM_OF_ROADS+15*n), 18]}],
 
 
     # 3rd Lane (no red light/turn left only)
     # [3, {'path': [24, 32, 30]}],
     # [2, {'path': [24, *road(NUM_OF_ROADS+16*n), 29]}],
-    [4, {'path': [24, *road(NUM_OF_ROADS+17*n), 31]}],
+    [3, {'path': [24, *road(NUM_OF_ROADS+17*n), 31]}],
 
     # [3, {'path': [25, 33, 31]}],
     # [2, {'path': [25, *road(NUM_OF_ROADS+18*n), 30]}],
-    [4, {'path': [25, *road(NUM_OF_ROADS+19*n), 28]}],
+    [3, {'path': [25, *road(NUM_OF_ROADS+19*n), 28]}],
 
     # [3, {'path': [26, 34, 28]}],
     # [2, {'path': [26, *road(NUM_OF_ROADS+20*n), 31]}],
@@ -314,7 +315,7 @@ sim.create_gen({
 
     # [3, {'path': [27, 35, 29]}],
     # [2, {'path': [27, *road(NUM_OF_ROADS+22*n), 28]}],
-    [4, {'path': [27, *road(NUM_OF_ROADS+23*n), 30]}]
+    [6, {'path': [27, *road(NUM_OF_ROADS+23*n), 30]}]
 
 ]})
 
@@ -329,4 +330,5 @@ sim.create_signal([[27]])
 # Start simulation
 win = Window(sim)
 win.zoom = 10
-win.run(steps_per_update=5)
+if(sim.getState() == False):
+    win.run(steps_per_update=STEPS_PER_UPDATE)
