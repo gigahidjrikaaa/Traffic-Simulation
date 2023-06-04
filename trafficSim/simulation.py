@@ -6,6 +6,7 @@ from .traffic_signal import TrafficSignal
 class Simulation:
     vehiclesPassed = 0;
     vehiclesPresent = 0;
+    vehicleRate = 0;
 
     def __init__(self, config={}):
         # Set default configuration
@@ -35,6 +36,7 @@ class Simulation:
     def create_gen(self, config={}):
         gen = VehicleGenerator(self, config)
         self.generators.append(gen)
+        Simulation.vehicleRate = gen.vehicle_rate
         return gen
 
     def create_signal(self, roads, config={}):

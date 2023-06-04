@@ -308,11 +308,19 @@ class Window:
         vehicles_passed = int(self.sim.vehiclesPassed)
         text_vehicles_passed = self.text_font.render(f'Vehicles Passed={vehicles_passed}', False, (0, 0, 0))
         text_vehicles_present = self.text_font.render(f'Vehicles Present={self.sim.vehiclesPresent}', False, (0, 0, 0))
+        text_average_vehicles_per_minute = self.text_font.render(f'Average Vehicles Per Minute={int(vehicles_passed/self.sim.t*60)}', False, (0, 0, 0))
+        text_total_vehicles = self.text_font.render(f'Total Vehicles={vehicles_passed + self.sim.vehiclesPresent}', False, (0, 0, 0))
+        text_vehicle_rate = self.text_font.render(f'Vehicle Rate={self.sim.vehicleRate}', False, (0, 0, 0))
 
+        #add white rectangle
+        self.screen.fill((255, 255, 255), (0, 0, 1400, 40))
         self.screen.blit(text_fps, (0, 0))
         self.screen.blit(text_frc, (100, 0))
         self.screen.blit(text_vehicles_passed, (200, 0))
         self.screen.blit(text_vehicles_present, (400, 0))
+        self.screen.blit(text_average_vehicles_per_minute, (630, 0))
+        self.screen.blit(text_total_vehicles, (0, 20))
+        self.screen.blit(text_vehicle_rate, (200, 20))
 
 
     def draw(self):

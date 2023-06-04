@@ -7,10 +7,10 @@ sim = Simulation()
 n = 20
 a = -2
 b = 12
-l = 100
+l = 300
 
 NUM_OF_ROADS = 36
-VEHICLE_RATE = 150
+VEHICLE_RATE = 200
 
 # Nodes
 WEST_RIGHT_START = (-b-l, a)
@@ -302,19 +302,19 @@ sim.create_gen({
     # 3rd Lane (no red light/turn left only)
     # [3, {'path': [24, 32, 30]}],
     # [2, {'path': [24, *road(NUM_OF_ROADS+16*n), 29]}],
-    [2, {'path': [24, *road(NUM_OF_ROADS+17*n), 31]}],
+    [4, {'path': [24, *road(NUM_OF_ROADS+17*n), 31]}],
 
     # [3, {'path': [25, 33, 31]}],
     # [2, {'path': [25, *road(NUM_OF_ROADS+18*n), 30]}],
-    [1, {'path': [25, *road(NUM_OF_ROADS+19*n), 28]}],
+    [4, {'path': [25, *road(NUM_OF_ROADS+19*n), 28]}],
 
     # [3, {'path': [26, 34, 28]}],
     # [2, {'path': [26, *road(NUM_OF_ROADS+20*n), 31]}],
-    [1, {'path': [26, *road(NUM_OF_ROADS+21*n), 29]}],
+    [4, {'path': [26, *road(NUM_OF_ROADS+21*n), 29]}],
 
     # [3, {'path': [27, 35, 29]}],
     # [2, {'path': [27, *road(NUM_OF_ROADS+22*n), 28]}],
-    [2, {'path': [27, *road(NUM_OF_ROADS+23*n), 30]}]
+    [4, {'path': [27, *road(NUM_OF_ROADS+23*n), 30]}]
 
 ]})
 
@@ -329,4 +329,4 @@ sim.create_signal([[27]])
 # Start simulation
 win = Window(sim)
 win.zoom = 10
-win.run(steps_per_update=3)
+win.run(steps_per_update=5)
