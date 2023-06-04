@@ -26,7 +26,6 @@ EAST_LEFT_START = (b+l, a)
 NORTH_RIGHT_START = (-a, -b-l)
 NORTH_LEFT_START = (a, -b-l)
 
-
 WEST_RIGHT = (-b, a)
 WEST_LEFT =	(-b, -a)
 
@@ -321,14 +320,15 @@ sim.create_gen({
 
 sim.create_signal([[0], [1], [2], [3]])
 sim.create_signal([[12], [13], [14], [15]])
+
+# Create Green Light for 3rd Lane
 sim.create_signal([[24]])
 sim.create_signal([[25]])
 sim.create_signal([[26]])
 sim.create_signal([[27]])
 
-
 # Start simulation
 win = Window(sim)
 win.zoom = 10
-if(sim.getState() == False):
+if(sim.isPaused == False):
     win.run(steps_per_update=STEPS_PER_UPDATE)

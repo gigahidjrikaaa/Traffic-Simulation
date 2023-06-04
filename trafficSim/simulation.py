@@ -105,6 +105,3 @@ class Simulation:
 
     def resume(self):
         self.isPaused = False
-
-    def getState(self):
-        return self.isPaused
