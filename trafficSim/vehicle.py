@@ -16,9 +16,9 @@ class Vehicle:
         self.l = 3
         self.s0 = 3
         self.T = 1
-        self.v_max = 40
-        self.a_max = 50
-        self.b_max = 30
+        self.v_max = 20
+        self.a_max = 5
+        self.b_max = 10
 
         self.path = []
         self.current_road_index = 0
