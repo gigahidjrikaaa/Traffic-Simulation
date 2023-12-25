@@ -277,8 +277,8 @@ sim.create_gen({
     [3, {'path': [2, *road(NUM_OF_ROADS+4*n), 7]}],
     # [1, {'path': [2, *road(24+5*n), 5]}],
 
-    [4, {'path': [3, 11, 5]}],
-    [4, {'path': [3, *road(NUM_OF_ROADS+6*n), 4]}],
+    [3, {'path': [3, 11, 5]}],
+    [3, {'path': [3, *road(NUM_OF_ROADS+6*n), 4]}],
     # [2, {'path': [3, *road(24+7*n), 6]}],
 
     # 2nd Lane
@@ -294,9 +294,9 @@ sim.create_gen({
     # [2, {'path': [14, *road(24+12*n), 19]}],
     [3, {'path': [14, *road(NUM_OF_ROADS+13*n), 17]}],
 
-    [4, {'path': [15, 23, 17]}],
+    [3, {'path': [15, 23, 17]}],
     # [2, {'path': [15, *road(24+14*n), 16]}],
-    [4, {'path': [15, *road(NUM_OF_ROADS+15*n), 18]}],
+    [3, {'path': [15, *road(NUM_OF_ROADS+15*n), 18]}],
 
 
     # 3rd Lane (no red light/turn left only)
@@ -314,7 +314,7 @@ sim.create_gen({
 
     # [3, {'path': [27, 35, 29]}],
     # [2, {'path': [27, *road(NUM_OF_ROADS+22*n), 28]}],
-    [6, {'path': [27, *road(NUM_OF_ROADS+23*n), 30]}]
+    [4, {'path': [27, *road(NUM_OF_ROADS+23*n), 30]}]
 
 ]})
 

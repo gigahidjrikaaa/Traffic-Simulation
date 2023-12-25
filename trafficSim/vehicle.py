@@ -12,13 +12,51 @@ class Vehicle:
         # Calculate properties
         self.init_properties()
 
-    def set_default_config(self):    
-        self.l = 3
-        self.s0 = 3
-        self.T = 1
-        self.v_max = 20
-        self.a_max = 5
-        self.b_max = 10
+    def set_default_config(self):  
+        vehicleTypes = ["car", "truck", "bus", "motorcycle"]  
+        colors = [(255, 0, 0), (0, 255, 0), (0, 0, 255), (255, 165, 0), (255, 255, 0), (0, 255, 255), (255, 0, 255)]
+        # self.vehicleType with the probability:
+        # car: 0.2
+        # truck: 0.05
+        # bus: 0.05
+        # motorcycle: 0.7
+        self.vehicleType = np.random.choice(vehicleTypes, p=[0.3, 0.1, 0.1, 0.5])
+        if(self.vehicleType == "car"):
+            self.l = 3
+            self.h = 2
+            self.color = colors[0]
+            self.s0 = 3
+            self.T = 1
+            self.v_max = 20
+            self.a_max = 5
+            self.b_max = 10
+        elif(self.vehicleType == "truck"):
+            self.l = 5
+            self.h = 3
+            self.color = colors[4]
+            self.s0 = 5
+            self.T = 1
+            self.v_max = 15
+            self.a_max = 4
+            self.b_max = 8
+        elif(self.vehicleType == "bus"):
+            self.l = 5
+            self.h = 3
+            self.color = colors[2]
+            self.s0 = 4
+            self.T = 1
+            self.v_max = 20
+            self.a_max = 6
+            self.b_max = 12
+        elif(self.vehicleType == "motorcycle"):
+            self.l = 2
+            self.h = 1
+            self.color = colors[3]
+            self.s0 = 2
+            self.T = 1
+            self.v_max = 25
+            self.a_max = 7
+            self.b_max = 20
 
         self.path = []
         self.current_road_index = 0

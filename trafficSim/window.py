@@ -269,13 +269,13 @@ class Window:
                     )   
 
     def draw_vehicle(self, vehicle, road):
-        l, h = vehicle.l,  2
+        l, h = vehicle.l,  vehicle.h
         sin, cos = road.angle_sin, road.angle_cos
 
         x = road.start[0] + cos * vehicle.x 
         y = road.start[1] + sin * vehicle.x 
 
-        self.rotated_box((x, y), (l, h), cos=cos, sin=sin, centered=True)
+        self.rotated_box((x, y), (l, h), cos=cos, sin=sin, color=vehicle.color, centered=True)
 
     def draw_vehicles(self):
         for road in self.sim.roads:
