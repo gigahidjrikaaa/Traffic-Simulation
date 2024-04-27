@@ -1,5 +1,14 @@
 import numpy as np
 
+# Define Colors as constants
+RED = (255, 0, 0)
+GREEN = (0, 255, 0)
+BLUE = (0, 0, 255)
+ORANGE = (255, 165, 0)
+YELLOW = (255, 255, 0)
+CYAN = (0, 255, 255)
+PURPLE = (255, 0, 255)
+
 class Vehicle:
     def __init__(self, config={}):
         # Set default configuration
@@ -14,7 +23,7 @@ class Vehicle:
 
     def set_default_config(self):  
         vehicleTypes = ["car", "truck", "bus", "motorcycle"]  
-        colors = [(255, 0, 0), (0, 255, 0), (0, 0, 255), (255, 165, 0), (255, 255, 0), (0, 255, 255), (255, 0, 255)]
+        colors = [RED, GREEN, BLUE, ORANGE, YELLOW, CYAN, PURPLE]
         # self.vehicleType with the probability:
         # car: 0.2
         # truck: 0.05
@@ -24,7 +33,7 @@ class Vehicle:
         if(self.vehicleType == "car"):
             self.l = 3
             self.h = 2
-            self.color = colors[0]
+            self.color = RED
             self.s0 = 3
             self.T = 1
             self.v_max = 20
@@ -33,7 +42,7 @@ class Vehicle:
         elif(self.vehicleType == "truck"):
             self.l = 5
             self.h = 3
-            self.color = colors[4]
+            self.color = YELLOW
             self.s0 = 5
             self.T = 1
             self.v_max = 15
@@ -42,7 +51,7 @@ class Vehicle:
         elif(self.vehicleType == "bus"):
             self.l = 5
             self.h = 3
-            self.color = colors[2]
+            self.color = BLUE
             self.s0 = 4
             self.T = 1
             self.v_max = 20
@@ -51,7 +60,7 @@ class Vehicle:
         elif(self.vehicleType == "motorcycle"):
             self.l = 2
             self.h = 1
-            self.color = colors[3]
+            self.color = ORANGE
             self.s0 = 2
             self.T = 1
             self.v_max = 25
