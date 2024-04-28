@@ -18,6 +18,7 @@ class TrafficSignal:
         self.slow_distance = 50
         self.slow_factor = 0.4
         self.stop_distance = 12
+        self.cycle_length = 20
 
         self.current_cycle_index = 0
 
@@ -33,7 +34,7 @@ class TrafficSignal:
         return self.cycle[self.current_cycle_index]
     
     def update(self, sim):
-        cycle_length = 20
+        cycle_length = self.cycle_length
         # randomize the cycle length after every cycle
         if(sim.t % cycle_length == 0):
             cycle_length = random.randint(20, 40)

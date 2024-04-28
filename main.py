@@ -11,7 +11,7 @@ l = 300
 
 NUM_OF_ROADS = 36
 VEHICLE_RATE = 100
-STEPS_PER_UPDATE = 2
+STEPS_PER_UPDATE = 50
 
 # Nodes
 WEST_RIGHT_START = (-b-l, a)
@@ -329,6 +329,7 @@ sim.create_signal([[27]])
 
 # Start simulation
 win = Window(sim)
+print("Traffic Light Cycle: ", sim.traffic_signals[0].cycle_length)
 win.zoom = 10
 if(sim.isPaused == False):
     win.run(steps_per_update=STEPS_PER_UPDATE)

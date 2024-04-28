@@ -95,6 +95,15 @@ class Simulation:
         self.t += self.dt
         self.frame_count += 1
 
+        # Stop at certain time (for sampling purposes. Comment out if not needed)
+        if self.t >= 120 and self.t <= 121:
+            print("Time: " + str(self.t))
+            print("Vehicles Passed: " + str(Simulation.vehiclesPassed))
+            print("Vehicles Present: " + str(Simulation.vehiclesPresent))
+            print("Vehicle Rate: " + str(Simulation.vehicleRate))
+            print("Traffic Density: " + str(Simulation.vehiclesPresent / (len(self.roads) * self.roads[0].length)))
+            exit()
+
 
     def run(self, steps):
         for _ in range(steps):
