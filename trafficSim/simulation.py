@@ -96,7 +96,8 @@ class Simulation:
         self.frame_count += 1
 
         # Stop at certain time (for sampling purposes. Comment out if not needed)
-        if self.t >= 120 and self.t <= 121:
+        self.time_limit = 120
+        if self.t >= self.time_limit:
             print("Time: " + str(self.t))
             print("Vehicles Passed: " + str(Simulation.vehiclesPassed))
             print("Vehicles Present: " + str(Simulation.vehiclesPresent))
