@@ -2,6 +2,7 @@ from .road import Road
 from copy import deepcopy
 from .vehicle_generator import VehicleGenerator
 from .traffic_signal import TrafficSignal
+import csv
 
 class Simulation:
     vehiclesPassed = 0;
@@ -95,15 +96,26 @@ class Simulation:
         self.t += self.dt
         self.frame_count += 1
 
-        # Stop at certain time (for sampling purposes. Comment out if not needed)
+        # Stop at certain time in seconds (for sampling purposes. Comment out if not needed)
         self.time_limit = 120
         if self.t >= self.time_limit:
+            print("Traffic Signal Cycle Length: " + str(self.traffic_signals[0].cycle_length))
             print("Time: " + str(self.t))
             print("Vehicles Passed: " + str(Simulation.vehiclesPassed))
             print("Vehicles Present: " + str(Simulation.vehiclesPresent))
             print("Vehicle Rate: " + str(Simulation.vehicleRate))
             print("Traffic Density: " + str(Simulation.vehiclesPresent / (len(self.roads) * self.roads[0].length)))
-            exit()
+
+            # Add to CSV the time and vehicles passed
+            with open('data.csv', mode='a') as data_file:
+                data_writer = csv.writer(data_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+                data_writer.writerow([self.traffic_signals[0].cycle_length, Simulation.vehiclesPassed])
+
+            # Reset time and vehicles passed
+            self.t = 0
+            gen.delete_all_vehicles()
+            Simulation.vehiclesPassed = 0
+            Simulation.vehiclesPresent = 0
 
 
     def run(self, steps):

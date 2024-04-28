@@ -50,3 +50,7 @@ class VehicleGenerator:
                 self.last_added_time = self.sim.t
             self.upcoming_vehicle = self.generate_vehicle()
 
+    def delete_all_vehicles(self):
+        for road in self.sim.roads:
+            road.vehicles.clear()
+        self.last_added_time = 0

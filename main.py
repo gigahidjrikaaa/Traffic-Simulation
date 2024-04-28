@@ -1,5 +1,6 @@
 import numpy as np
 from trafficSim import *
+import csv
 
 sim = Simulation()
 
@@ -329,7 +330,6 @@ sim.create_signal([[27]])
 
 # Start simulation
 win = Window(sim)
-print("Traffic Light Cycle: ", sim.traffic_signals[0].cycle_length)
 win.zoom = 10
 if(sim.isPaused == False):
     win.run(steps_per_update=STEPS_PER_UPDATE)
