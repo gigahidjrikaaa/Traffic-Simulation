@@ -25,6 +25,7 @@ class Simulation:
         self.roads = []         # Array to store roads
         self.generators = []
         self.traffic_signals = []
+        self.iteration = 0      # n-th iteration (of sampling, if enabled)
 
     def create_road(self, start, end):
         road = Road(start, end)
@@ -97,7 +98,7 @@ class Simulation:
         self.frame_count += 1
 
         # Stop at certain time in seconds (for sampling purposes. Comment out if not needed)
-        self.time_limit = 120
+        self.time_limit = 300
         if self.t >= self.time_limit:
             print("Traffic Signal Cycle Length: " + str(self.traffic_signals[0].cycle_length))
             print("Time: " + str(self.t))
@@ -105,6 +106,7 @@ class Simulation:
             print("Vehicles Present: " + str(Simulation.vehiclesPresent))
             print("Vehicle Rate: " + str(Simulation.vehicleRate))
             print("Traffic Density: " + str(Simulation.vehiclesPresent / (len(self.roads) * self.roads[0].length)))
+            print("Iteration: " + str(self.iteration))
 
             # Add to CSV the time and vehicles passed
             with open('data.csv', mode='a') as data_file:
@@ -112,10 +114,15 @@ class Simulation:
                 data_writer.writerow([self.traffic_signals[0].cycle_length, Simulation.vehiclesPassed])
 
             # Reset time and vehicles passed
-            self.t = 0
+            self.t = 0.001
             gen.delete_all_vehicles()
             Simulation.vehiclesPassed = 0
             Simulation.vehiclesPresent = 0
+            self.iteration += 1
+            if self.iteration % 5 == 0:
+                # Set all traffic signals to +1
+                for signal in self.traffic_signals:
+                    signal.cycle_length += 1
 
 
     def run(self, steps):
