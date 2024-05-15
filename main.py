@@ -5,14 +5,14 @@ import csv
 sim = Simulation()
 
 # Play with these
-n = 20
-a = -2
-b = 12
-l = 300
+n = 20      # Iterations for road turns
+a = -2      # Indicates point a 
+b = 12      # Indicates point b
+l = 300     # Length of road
 
-NUM_OF_ROADS = 36
-VEHICLE_RATE = 400
-STEPS_PER_UPDATE = 400
+NUM_OF_ROADS = 36 # Number of roads
+VEHICLE_RATE = 400 # Vehicle spawn rate per minute
+STEPS_PER_UPDATE = 1   # Number of steps per update
 
 # Nodes
 WEST_RIGHT_START = (-b-l, a)
