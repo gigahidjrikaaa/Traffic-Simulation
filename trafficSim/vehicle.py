@@ -1,5 +1,7 @@
 import numpy as np
 from typing import Optional, Any, Dict, List, Tuple
+from trafficSim.config import Configurable
+from trafficSim.config_loader import ConfigLoader
 
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
@@ -9,30 +11,59 @@ YELLOW = (255, 255, 0)
 CYAN = (0, 255, 255)
 PURPLE = (255, 0, 255)
 
-class Vehicle:
-    def __init__(self, config: Optional[Dict[str, Any]] = None) -> None:
-        if config is None:
-            config = {}
-        self.set_default_config()
+VEHICLE_TYPE_CONFIGS: Dict[str, Dict[str, Any]] = {
+    "car": {"l": 3.0, "h": 2.0, "color": RED, "s0": 3.0, "T": 1.0, "v_max": 20.0, "a_max": 5.0, "b_max": 10.0},
+    "truck": {"l": 5.0, "h": 3.0, "color": YELLOW, "s0": 5.0, "T": 1.0, "v_max": 15.0, "a_max": 4.0, "b_max": 8.0},
+    "bus": {"l": 5.0, "h": 3.0, "color": BLUE, "s0": 4.0, "T": 1.0, "v_max": 20.0, "a_max": 6.0, "b_max": 12.0},
+    "motorcycle": {"l": 2.0, "h": 1.0, "color": ORANGE, "s0": 2.0, "T": 1.0, "v_max": 25.0, "a_max": 7.0, "b_max": 20.0}
+}
 
-        for attr, val in config.items():
-            setattr(self, attr, val)
+VEHICLE_TYPE_PROBABILITIES = [0.3, 0.1, 0.1, 0.5]
+VEHICLE_TYPES = ["car", "truck", "bus", "motorcycle"]
+
+
+class Vehicle(Configurable):
+    def __init__(self, config: Optional[Dict[str, Any]] = None) -> None:
+        self.set_defaults()
+
+        if config is not None:
+            for attr, val in config.items():
+                if hasattr(self, attr):
+                    setattr(self, attr, val)
 
         self._apply_vehicle_type_properties()
         self.init_properties()
 
-    def set_default_config(self) -> None:
-        vehicle_types = ["car", "truck", "bus", "motorcycle"]
-        self.vehicle_type = np.random.choice(vehicle_types, p=[0.3, 0.1, 0.1, 0.5])
+    def apply_config(self, config: Dict[str, Any]) -> None:
+        Configurable.apply_config(self, config)
+        self._apply_vehicle_type_properties()
+        self.init_properties()
 
-        self.l = 3
-        self.h = 2
-        self.color = RED
-        self.s0 = 3.0
-        self.T = 1.0
-        self.v_max = 20.0
-        self.a_max = 5.0
-        self.b_max = 10.0
+    def _apply_vehicle_type_properties(self) -> None:
+        vehicle_type = getattr(self, 'vehicle_type', None)
+        if vehicle_type and vehicle_type in VEHICLE_TYPE_CONFIGS:
+            type_config = VEHICLE_TYPE_CONFIGS[vehicle_type]
+            self.l = float(type_config["l"])
+            self.h = float(type_config["h"])
+            self.color = type_config["color"]
+            self.s0 = float(type_config["s0"])
+            self.T = float(type_config["T"])
+            self.v_max = float(type_config["v_max"])
+            self.a_max = float(type_config["a_max"])
+            self.b_max = float(type_config["b_max"])
+
+    def set_defaults(self) -> None:
+        self.vehicle_type = np.random.choice(VEHICLE_TYPES, p=VEHICLE_TYPE_PROBABILITIES)
+        config = VEHICLE_TYPE_CONFIGS[self.vehicle_type]
+
+        self.l = float(config["l"])
+        self.h = float(config["h"])
+        self.color = config["color"]
+        self.s0 = float(config["s0"])
+        self.T = float(config["T"])
+        self.v_max = float(config["v_max"])
+        self.a_max = float(config["a_max"])
+        self.b_max = float(config["b_max"])
 
         self.path: List[int] = []
         self.current_road_index = 0
@@ -43,47 +74,9 @@ class Vehicle:
         self.stopped = False
         self.time_added = 0.0
 
-    def _apply_vehicle_type_properties(self) -> None:
-        if self.vehicle_type == "car":
-            self.l = 3
-            self.h = 2
-            self.color = RED
-            self.s0 = 3.0
-            self.T = 1.0
-            self.v_max = 20.0
-            self.a_max = 5.0
-            self.b_max = 10.0
-        elif self.vehicle_type == "truck":
-            self.l = 5
-            self.h = 3
-            self.color = YELLOW
-            self.s0 = 5.0
-            self.T = 1.0
-            self.v_max = 15.0
-            self.a_max = 4.0
-            self.b_max = 8.0
-        elif self.vehicle_type == "bus":
-            self.l = 5
-            self.h = 3
-            self.color = BLUE
-            self.s0 = 4.0
-            self.T = 1.0
-            self.v_max = 20.0
-            self.a_max = 6.0
-            self.b_max = 12.0
-        elif self.vehicle_type == "motorcycle":
-            self.l = 2
-            self.h = 1
-            self.color = ORANGE
-            self.s0 = 2.0
-            self.T = 1.0
-            self.v_max = 25.0
-            self.a_max = 7.0
-            self.b_max = 20.0
-
     def init_properties(self) -> None:
-        self.sqrt_ab = 2 * np.sqrt(self.a_max * self.b_max)
-        self._v_max = float(self.v_max)
+        self.sqrt_ab: float = 2 * np.sqrt(float(self.a_max) * float(self.b_max))
+        self._v_max: float = float(self.v_max)
 
     def update(self, lead: Optional['Vehicle'], dt: float) -> None:
         delta_a = 2

@@ -1,25 +1,28 @@
 from scipy.spatial import distance
 from collections import deque
-from typing import Optional, TYPE_CHECKING
+from typing import Optional, TYPE_CHECKING, Tuple
+from trafficSim.config import Configurable
 
 if TYPE_CHECKING:
     from trafficSim.vehicle import Vehicle
     from trafficSim.traffic_signal import TrafficSignal
 
-class Road:
-    def __init__(self, start: tuple, end: tuple) -> None:
-        self.start: tuple = start
-        self.end: tuple = end
 
-        self.vehicles: deque[Vehicle] = deque()
-
+class Road(Configurable):
+    def __init__(self, start: Tuple[float, float], end: Tuple[float, float], config: Optional[dict] = None) -> None:
+        self.start = start
+        self.end = end
+        Configurable.__init__(self, config or {})
+        self.vehicles: deque = deque()
         self.init_properties()
+
+    def set_defaults(self) -> None:
+        self.has_traffic_signal = False
 
     def init_properties(self) -> None:
         self.length = distance.euclidean(self.start, self.end)
         self.angle_sin = (self.end[1] - self.start[1]) / self.length
         self.angle_cos = (self.end[0] - self.start[0]) / self.length
-        self.has_traffic_signal = False
 
     def set_traffic_signal(self, signal: 'TrafficSignal', group: int) -> None:
         self.traffic_signal = signal

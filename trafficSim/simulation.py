@@ -3,23 +3,20 @@ from copy import deepcopy
 from trafficSim.road import Road
 from trafficSim.vehicle_generator import VehicleGenerator
 from trafficSim.traffic_signal import TrafficSignal
+from trafficSim.config import Configurable
 import csv
 
-class Simulation:
+
+class Simulation(Configurable):
     vehicles_passed = 0
     vehicles_present = 0
     vehicle_rate = 0
     is_paused = False
 
     def __init__(self, config: Dict[str, Any] | None = None) -> None:
-        if config is None:
-            config = {}
-        self.set_default_config()
+        Configurable.__init__(self, config)
 
-        for attr, val in config.items():
-            setattr(self, attr, val)
-
-    def set_default_config(self) -> None:
+    def set_defaults(self) -> None:
         self.t = 0.0
         self.frame_count = 0
         self.dt = 1 / 60

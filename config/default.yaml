@@ -1,0 +1,24 @@
+simulation:
+  dt: 0.01667
+  time_limit: 300
+  fps: 60
+
+traffic_signal:
+  cycle_length_min: 20
+  cycle_length_max: 40
+  slow_distance: 50
+  slow_factor: 0.4
+  stop_distance: 12
+  cycle_length: 1
+
+vehicle_generator:
+  vehicle_rate: 20
+
+intersection:
+  road_turn_iterations: 20
+  road_length: 300
+  node_a: -2
+  node_b: 12
+  num_roads: 36
+  vehicle_spawn_rate: 400
+  steps_per_update: 1

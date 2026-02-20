@@ -1,26 +1,22 @@
 from typing import Dict, List, Tuple, Any, TYPE_CHECKING
 from numpy.random import randint
 from trafficSim.vehicle import Vehicle
+from trafficSim.config import Configurable
 
 if TYPE_CHECKING:
-    from traffic_sim.simulation import Simulation
+    from trafficSim.simulation import Simulation
 
-class VehicleGenerator:
+
+class VehicleGenerator(Configurable):
     def __init__(self, sim: 'Simulation', config: Dict[str, Any] | None = None) -> None:
-        if config is None:
-            config = {}
         self.sim = sim
-        self.set_default_config()
-
-        for attr, val in config.items():
-            setattr(self, attr, val)
-
+        Configurable.__init__(self, config)
         self.init_properties()
 
-    def set_default_config(self) -> None:
+    def set_defaults(self) -> None:
         self.vehicle_rate = 20
         self.vehicles: List[Tuple[int, Dict[str, Any]]] = [(1, {})]
-        self.last_added_time = 0
+        self.last_added_time: float = 0
 
     def init_properties(self) -> None:
         self.upcoming_vehicle = self.generate_vehicle()

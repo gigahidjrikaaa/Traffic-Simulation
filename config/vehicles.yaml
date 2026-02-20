@@ -1,0 +1,44 @@
+vehicle_types:
+  car:
+    probability: 0.3
+    length: 3
+    height: 2
+    color: [255, 0, 0]
+    s0: 3
+    T: 1
+    v_max: 20
+    a_max: 5
+    b_max: 10
+
+  truck:
+    probability: 0.1
+    length: 5
+    height: 3
+    color: [255, 255, 0]
+    s0: 5
+    T: 1
+    v_max: 15
+    a_max: 4
+    b_max: 8
+
+  bus:
+    probability: 0.1
+    length: 5
+    height: 3
+    color: [0, 0, 255]
+    s0: 4
+    T: 1
+    v_max: 20
+    a_max: 6
+    b_max: 12
+
+  motorcycle:
+    probability: 0.5
+    length: 2
+    height: 1
+    color: [255, 165, 0]
+    s0: 2
+    T: 1
+    v_max: 25
+    a_max: 7
+    b_max: 20

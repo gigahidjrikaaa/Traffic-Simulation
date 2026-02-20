@@ -279,13 +279,20 @@ class Window:
                     )
 
     def draw_vehicle(self, vehicle: 'Vehicle', road: 'Road') -> None:
-        l, h = vehicle.l, vehicle.h
+        l, h = float(vehicle.l), float(vehicle.h)
         sin, cos = road.angle_sin, road.angle_cos
 
         x = road.start[0] + cos * vehicle.x
         y = road.start[1] + sin * vehicle.x
 
-        self.rotated_box((x, y), (l, h), cos=cos, sin=sin, color=vehicle.color, centered=True)
+        color: Tuple[int, int, int]
+        if isinstance(vehicle.color, tuple):
+            c = vehicle.color
+            color = (int(c[0]), int(c[1]), int(c[2]))
+        else:
+            color = (int(vehicle.color), int(vehicle.color), int(vehicle.color))
+
+        self.rotated_box((x, y), (l, h), cos=cos, sin=sin, color=color, centered=True)
 
     def draw_vehicles(self) -> None:
         for road in self.sim.roads:
