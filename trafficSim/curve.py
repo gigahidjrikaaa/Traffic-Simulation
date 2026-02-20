@@ -1,10 +1,10 @@
-def curve_points(start, end, control, resolution=5):
-	# If curve is a straight line
+from typing import List, Tuple
+
+def curve_points(start: Tuple[float, float], end: Tuple[float, float], control: Tuple[float, float], resolution: int = 5) -> List[Tuple[float, float]]:
 	if (start[0] - end[0])*(start[1] - end[1]) == 0:
 		return [start, end]
 
-	# If not return a curve
-	path = []
+	path: List[Tuple[float, float]] = []
 
 	for i in range(resolution+1):
 		t = i/resolution
@@ -14,19 +14,19 @@ def curve_points(start, end, control, resolution=5):
 
 	return path
 
-def curve_road(start, end, control, resolution=15):
+def curve_road(start: Tuple[float, float], end: Tuple[float, float], control: Tuple[float, float], resolution: int = 15) -> List[Tuple[Tuple[float, float], Tuple[float, float]]]:
 	points = curve_points(start, end, control, resolution=resolution)
 	return [(points[i-1], points[i]) for i in range(1, len(points))]
 
 TURN_LEFT = 0
 TURN_RIGHT = 1
-def turn_road(start, end, turn_direction, resolution=15):
-	# Get control point
+
+def turn_road(start: Tuple[float, float], end: Tuple[float, float], turn_direction: int, resolution: int = 15) -> List[Tuple[Tuple[float, float], Tuple[float, float]]]:
 	x = min(start[0], end[0])
 	y = min(start[1], end[1])
 
 	if turn_direction == TURN_LEFT:
-		control = (
+		control: Tuple[float, float] = (
 			x - y + start[1],
 			y - x + end[0]
 		)
@@ -35,6 +35,6 @@ def turn_road(start, end, turn_direction, resolution=15):
 			x - y + end[1],
 			y - x + start[0]
 		)
-	
+
 	return curve_road(start, end, control, resolution=resolution)
 

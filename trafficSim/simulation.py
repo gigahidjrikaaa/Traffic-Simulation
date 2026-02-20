@@ -1,136 +1,120 @@
-from .road import Road
+from typing import List, Any, Dict
 from copy import deepcopy
-from .vehicle_generator import VehicleGenerator
-from .traffic_signal import TrafficSignal
+from trafficSim.road import Road
+from trafficSim.vehicle_generator import VehicleGenerator
+from trafficSim.traffic_signal import TrafficSignal
 import csv
 
 class Simulation:
-    vehiclesPassed = 0;
-    vehiclesPresent = 0;
-    vehicleRate = 0;
-    isPaused = False;
+    vehicles_passed = 0
+    vehicles_present = 0
+    vehicle_rate = 0
+    is_paused = False
 
-    def __init__(self, config={}):
-        # Set default configuration
+    def __init__(self, config: Dict[str, Any] | None = None) -> None:
+        if config is None:
+            config = {}
         self.set_default_config()
 
-        # Update configuration
         for attr, val in config.items():
             setattr(self, attr, val)
 
-    def set_default_config(self):
-        self.t = 0.0            # Time keeping
-        self.frame_count = 0    # Frame count keeping
-        self.dt = 1/60          # Simulation time step
-        self.roads = []         # Array to store roads
-        self.generators = []
-        self.traffic_signals = []
-        self.iteration = 0      # n-th iteration (of sampling, if enabled)
+    def set_default_config(self) -> None:
+        self.t = 0.0
+        self.frame_count = 0
+        self.dt = 1 / 60
+        self.roads: List[Road] = []
+        self.generators: List[VehicleGenerator] = []
+        self.traffic_signals: List[TrafficSignal] = []
+        self.iteration = 0
+        self.time_limit = 300
 
-    def create_road(self, start, end):
+    def create_road(self, start: tuple, end: tuple) -> Road:
         road = Road(start, end)
         self.roads.append(road)
         return road
 
-    def create_roads(self, road_list):
+    def create_roads(self, road_list: List[Any]) -> None:
         for road in road_list:
             self.create_road(*road)
 
-    def create_gen(self, config={}):
+    def create_gen(self, config: Dict[str, Any] | None = None) -> VehicleGenerator:
+        if config is None:
+            config = {}
         gen = VehicleGenerator(self, config)
         self.generators.append(gen)
-        Simulation.vehicleRate = gen.vehicle_rate
+        Simulation.vehicle_rate = gen.vehicle_rate
         return gen
 
-    def create_signal(self, roads, config={}):
-        roads = [[self.roads[i] for i in road_group] for road_group in roads]
-        sig = TrafficSignal(roads, config)
+    def create_signal(self, roads: List[List[int]], config: Dict[str, Any] | None = None) -> TrafficSignal:
+        if config is None:
+            config = {}
+        road_objects = [[self.roads[i] for i in road_group] for road_group in roads]
+        sig = TrafficSignal(road_objects, config)
         self.traffic_signals.append(sig)
         return sig
 
-    def update(self):
-        # Update every road
+    def update(self) -> None:
         for road in self.roads:
             road.update(self.dt)
 
-        # Add vehicles
         for gen in self.generators:
             gen.update()
 
         for signal in self.traffic_signals:
             signal.update(self)
 
-        # Check roads for out of bounds vehicle
         for road in self.roads:
-            # If road has no vehicles, continue
-            if len(road.vehicles) == 0: continue
-            # If not
+            if len(road.vehicles) == 0:
+                continue
             vehicle = road.vehicles[0]
-            # If first vehicle is out of road bounds
             if vehicle.x >= road.length:
-                # If vehicle has a next road
                 if vehicle.current_road_index + 1 < len(vehicle.path):
-                    # Update current road to next road
                     vehicle.current_road_index += 1
-                    # Create a copy and reset some vehicle properties
                     new_vehicle = deepcopy(vehicle)
                     new_vehicle.x = 0
-                    # Add it to the next road
                     next_road_index = vehicle.path[vehicle.current_road_index]
                     self.roads[next_road_index].vehicles.append(new_vehicle)
                 else:
-                    Simulation.vehiclesPassed += 1
-                # In all cases, remove it from its road
-                road.vehicles.popleft() 
+                    Simulation.vehicles_passed += 1
+                road.vehicles.popleft()
 
-                # if vehicle reached the end of the path
-                # if vehicle.current_road_index + 1 == len(vehicle.path):
-                #     Simulation.vehiclesPassed += 1
-                    # print("Vehicle passed: " + str(Simulation.vehiclesPassed))
-
-        # Check for the number of vehicles present
-        Simulation.vehiclesPresent = 0
+        Simulation.vehicles_present = 0
         for road in self.roads:
-            Simulation.vehiclesPresent += len(road.vehicles)
+            Simulation.vehicles_present += len(road.vehicles)
 
-        # Increment time
         self.t += self.dt
         self.frame_count += 1
 
-        # Stop at certain time in seconds (for sampling purposes. Comment out if not needed)
-        self.time_limit = 300
         if self.t >= self.time_limit:
             print("Traffic Signal Cycle Length: " + str(self.traffic_signals[0].cycle_length))
             print("Time: " + str(self.t))
-            print("Vehicles Passed: " + str(Simulation.vehiclesPassed))
-            print("Vehicles Present: " + str(Simulation.vehiclesPresent))
-            print("Vehicle Rate: " + str(Simulation.vehicleRate))
-            print("Traffic Density: " + str(Simulation.vehiclesPresent / (len(self.roads) * self.roads[0].length)))
+            print("Vehicles Passed: " + str(Simulation.vehicles_passed))
+            print("Vehicles Present: " + str(Simulation.vehicles_present))
+            print("Vehicle Rate: " + str(Simulation.vehicle_rate))
+            print("Traffic Density: " + str(Simulation.vehicles_present / (len(self.roads) * self.roads[0].length)))
             print("Iteration: " + str(self.iteration))
 
-            # Add to CSV the time and vehicles passed
             with open('data.csv', mode='a') as data_file:
                 data_writer = csv.writer(data_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-                data_writer.writerow([self.traffic_signals[0].cycle_length, Simulation.vehiclesPassed])
+                data_writer.writerow([self.traffic_signals[0].cycle_length, Simulation.vehicles_passed])
 
-            # Reset time and vehicles passed
             self.t = 0.001
-            gen.delete_all_vehicles()
-            Simulation.vehiclesPassed = 0
-            Simulation.vehiclesPresent = 0
+            for gen in self.generators:
+                gen.delete_all_vehicles()
+            Simulation.vehicles_passed = 0
+            Simulation.vehicles_present = 0
             self.iteration += 1
             if self.iteration % 5 == 0:
-                # Set all traffic signals to +1
                 for signal in self.traffic_signals:
                     signal.cycle_length += 1
 
-
-    def run(self, steps):
+    def run(self, steps: int) -> None:
         for _ in range(steps):
             self.update()
 
-    def pause(self):
-        self.isPaused = True
+    def pause(self) -> None:
+        self.is_paused = True
 
-    def resume(self):
-        self.isPaused = False
+    def resume(self) -> None:
+        self.is_paused = False
